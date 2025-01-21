@@ -1,0 +1,39 @@
+###
+POST http://localhost:3000/prefixo/post
+###
+
+get http://localhost:3000/products
+Content-Type: application/application/json
+
+###
+# @name createProduct
+post http://localhost:3000/products
+
+{
+    "name": "Product 1",
+    "slug": "Product-123456323",
+    "description":"Description of Product 1",
+    "price": 9.90
+}
+
+###
+@productId = {{ createProduct.response.body.id }}
+
+###
+get http://localhost:3000/products/{{ productId }}
+
+###
+patch http://localhost:3000/products/{{ productId }}
+Content-Type: application/json
+
+{
+  "name": "Product 45456",
+  "slug": "Product-1111",
+  "description": "Description of Product 1111",
+  "price": 11.30
+   
+}
+
+###
+delete http://localhost:3000/products/{{ productId }}
+Content-Type: application/json
