@@ -6,3 +6,6 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "price" REAL NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");

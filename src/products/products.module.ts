@@ -1,17 +1,19 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { ProductsController } from './products.controller';
+import { AdminProductsController } from './admin/admin-products.controller';
 import { PrismaService } from '../prisma/prisma.service';
-import { ProductsService } from './products.service';
+import { AdminProductsService } from './admin/admin-products.service';
+import { ProductsController } from './public/products.controller';
+import { ProductsService } from './public/products.service';
 
 @Module({
-  controllers: [ProductsController],
-  providers: [ProductsService],
+  controllers: [AdminProductsController,ProductsController],
+  providers: [AdminProductsService,ProductsService],
 })
 
 export class ProductsModule implements OnModuleInit {
   constructor(
     private prismaService: PrismaService ,
-    private productsService: ProductsService,
+    private adminProductsService: AdminProductsService,
   ) {}
 
   async onModuleInit() {
@@ -22,7 +24,7 @@ export class ProductsModule implements OnModuleInit {
     await this.prismaService.product.deleteMany();
 
     for (const productIndex of products) {
-       await this.productsService.create({
+       await this.adminProductsService.create({
         name: `Product ${productIndex}`,
         slug: `Product-${productIndex}`,
         description: `Description of products ${productIndex}`,
@@ -31,18 +33,5 @@ export class ProductsModule implements OnModuleInit {
     }
   }
 
-  /* async onModuleInit() {
-    const products = new Array(10).fill(0).map((_, index) => index + 1);
-
-    await this.prismaService.product.deleteMany();
-
-    for (const productIndex of products) {
-      await this.productsService.create({
-        name: `Product ${productIndex}`,
-        slug: `product-${productIndex}`,
-        description: `Product ${productIndex}`,
-        price: productIndex * 100,
-      });
-    }
-  } */
+  
 }

@@ -1,12 +1,14 @@
-import { ArgumentsHost, ExceptionFilter, Catch } from "@nestjs/common";
 
+import { Catch, ArgumentsHost , ExceptionFilter, Global } from "@nestjs/common";
+import {Response} from "express";
+import { ProductSlugAlreadyExistsError } from "../errors";
 
 @Catch(ProductSlugAlreadyExistsError)
 export class ProductSlugAlreadyExistsErrorFilter implements ExceptionFilter {
 
     catch(exception: any, host: ArgumentsHost) {
 
-        ctx = host.switchToHttp();
+        const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
 
         response.status(409).json({
